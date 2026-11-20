@@ -1,0 +1,55 @@
+version: 2
+models:
+- name: delivery_performance_monthly
+  description: Delivered orders by month and customer state, with late rate and review impact.
+  columns:
+  - name: late_rate
+    data_tests:
+    - dbt_utils.accepted_range:
+        arguments:
+          min_value: 0
+          max_value: 1
+  data_tests:
+  - dbt_utils.unique_combination_of_columns:
+      arguments:
+        combination_of_columns:
+        - month
+        - customer_state
+- name: seller_scorecard
+  description: Per-seller volume, revenue, speed, lateness, reviews and a simple tier.
+  columns:
+  - name: seller_id
+    data_tests:
+    - unique
+    - not_null
+  - name: seller_tier
+    data_tests:
+    - accepted_values:
+        arguments:
+          values:
+          - top
+          - standard
+          - at risk
+          - new / low volume
+- name: customer_cohorts
+  description: Monthly acquisition cohorts with repeat-purchase retention.
+  columns:
+  - name: retention_rate
+    data_tests:
+    - dbt_utils.accepted_range:
+        arguments:
+          min_value: 0
+          max_value: 1
+  data_tests:
+  - dbt_utils.unique_combination_of_columns:
+      arguments:
+        combination_of_columns:
+        - cohort_month
+        - months_since_first
+- name: customer_rfm
+  description: Recency / frequency / monetary scores and segments.
+  columns:
+  - name: customer_unique_id
+    data_tests:
+    - unique
+    - not_null

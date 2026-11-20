@@ -1,0 +1,26 @@
+version: 2
+sources:
+- name: olist
+  schema: raw
+  description: Olist marketplace extracts, contract-checked in the silver layer and loaded with COPY.
+  tables:
+  - name: orders
+  - name: order_items
+  - name: order_payments
+  - name: order_reviews
+  - name: customers
+  - name: sellers
+  - name: products
+  - name: category_translation
+  - name: geolocation
+    config:
+      freshness: null
+  config:
+    loaded_at_field: _loaded_at
+    freshness:
+      warn_after:
+        count: 1
+        period: day
+      error_after:
+        count: 7
+        period: day

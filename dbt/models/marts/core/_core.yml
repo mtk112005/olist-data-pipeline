@@ -1,0 +1,155 @@
+version: 2
+models:
+- name: fct_orders
+  description: One row per order with value, payment, delivery and review facts. Incremental.
+  config:
+    contract:
+      enforced: true
+  columns:
+  - name: order_id
+    data_type: text
+    constraints:
+    - type: not_null
+    - type: primary_key
+    data_tests:
+    - unique
+  - name: customer_id
+    data_type: text
+    constraints:
+    - type: not_null
+  - name: customer_unique_id
+    data_type: text
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('dim_customers')
+          field: customer_unique_id
+  - name: order_status
+    data_type: text
+  - name: purchase_date
+    data_type: date
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('dim_date')
+          field: date_day
+  - name: order_purchase_timestamp
+    data_type: timestamp
+  - name: order_approved_at
+    data_type: timestamp
+  - name: order_delivered_carrier_date
+    data_type: timestamp
+  - name: order_delivered_customer_date
+    data_type: timestamp
+  - name: order_estimated_delivery_date
+    data_type: timestamp
+  - name: item_count
+    data_type: integer
+  - name: seller_count
+    data_type: integer
+  - name: items_value
+    data_type: numeric(12,2)
+  - name: freight_value
+    data_type: numeric(12,2)
+  - name: order_value
+    data_type: numeric(12,2)
+    data_tests:
+    - dbt_utils.accepted_range:
+        arguments:
+          min_value: 0
+  - name: payment_value
+    data_type: numeric(12,2)
+  - name: main_payment_type
+    data_type: text
+  - name: max_installments
+    data_type: integer
+  - name: used_voucher
+    data_type: boolean
+  - name: review_score
+    data_type: integer
+  - name: review_has_comment
+    data_type: boolean
+  - name: is_delivered
+    data_type: boolean
+  - name: delivery_days
+    data_type: numeric(8,2)
+    data_tests:
+    - dbt_utils.accepted_range:
+        arguments:
+          min_value: 0
+        config:
+          where: is_delivered
+  - name: promised_days
+    data_type: numeric(8,2)
+  - name: delay_days
+    data_type: integer
+  - name: is_late
+    data_type: boolean
+  - name: has_timeline_anomaly
+    data_type: boolean
+  - name: _loaded_at
+    data_type: timestamptz
+- name: fct_order_items
+  description: One row per order line, with seller-to-customer distance.
+  columns:
+  - name: order_id
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('fct_orders')
+          field: order_id
+  - name: product_id
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('dim_products')
+          field: product_id
+  - name: seller_id
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('dim_sellers')
+          field: seller_id
+  - name: distance_km
+    data_tests:
+    - dbt_utils.accepted_range:
+        arguments:
+          min_value: 0
+          max_value: 5000
+  data_tests:
+  - dbt_utils.unique_combination_of_columns:
+      arguments:
+        combination_of_columns:
+        - order_id
+        - order_item_id
+- name: dim_customers
+  description: One row per real customer (customer_unique_id).
+  columns:
+  - name: customer_unique_id
+    data_tests:
+    - unique
+    - not_null
+  - name: order_count
+    data_tests:
+    - dbt_utils.accepted_range:
+        arguments:
+          min_value: 1
+- name: dim_sellers
+  columns:
+  - name: seller_id
+    data_tests:
+    - unique
+    - not_null
+- name: dim_products
+  columns:
+  - name: product_id
+    data_tests:
+    - unique
+    - not_null
+- name: dim_date
+  columns:
+  - name: date_day
+    data_tests:
+    - unique
+    - not_null

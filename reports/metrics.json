@@ -1,0 +1,68 @@
+{
+  "headline": {
+    "orders": 99441.0,
+    "customers": 96096.0,
+    "repeat_rate": 0.031187562437562436,
+    "late_rate": 0.06773090079817559,
+    "avg_delivery_days": 12.558207525655645,
+    "avg_promised_days": 23.736369337617912
+  },
+  "delay_vs_review": [
+    {
+      "bucket": "on time",
+      "orders": 89443,
+      "avg_review": 4.290386055923885,
+      "share_1_2_star": 0.09267354628087161
+    },
+    {
+      "bucket": "1-3 days late",
+      "orders": 1852,
+      "avg_review": 3.291036717062635,
+      "share_1_2_star": 0.3212742980561555
+    },
+    {
+      "bucket": "4-7 days late",
+      "orders": 1748,
+      "avg_review": 2.102974828375286,
+      "share_1_2_star": 0.6767734553775744
+    },
+    {
+      "bucket": "8+ days late",
+      "orders": 2781,
+      "avg_review": 1.6961524631427545,
+      "share_1_2_star": 0.7928802588996764
+    }
+  ],
+  "worst_states_by_late_rate": [
+    {
+      "customer_state": "MA",
+      "orders": 720.0,
+      "late_rate": 0.17361194444444444,
+      "avg_days": 21.539166666666667
+    },
+    {
+      "customer_state": "CE",
+      "orders": 1281.0,
+      "late_rate": 0.13739336455893833,
+      "avg_days": 21.250273224043717
+    },
+    {
+      "customer_state": "BA",
+      "orders": 3254.0,
+      "late_rate": 0.12170485556238475,
+      "avg_days": 19.337532267977874
+    },
+    {
+      "customer_state": "RJ",
+      "orders": 12351.0,
+      "late_rate": 0.12111946401101126,
+      "avg_days": 15.30919358756376
+    },
+    {
+      "customer_state": "PA",
+      "orders": 946.0,
+      "late_rate": 0.11205570824524314,
+      "avg_days": 23.773319238900633
+    }
+  ]
+}

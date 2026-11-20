@@ -1,0 +1,23 @@
+# Environments
+.venv/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Data: the real Olist files are downloaded from Kaggle, never committed
+data/
+lake/
+*.parquet
+
+# The small fixture sample used by CI IS committed
+!tests/fixtures/**
+
+# dbt artifacts
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+logs/
+dbt/.user.yml

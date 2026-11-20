@@ -1,0 +1,37 @@
+name: 'olist_warehouse'
+version: '2.0.0'
+config-version: 2
+profile: 'olist_warehouse'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  # Olist data ends in late 2018; "today" for recency metrics is the last purchase date.
+  late_tolerance_days: 0
+
+models:
+  olist_warehouse:
+    staging:
+      +schema: staging
+      +materialized: view
+    intermediate:
+      +schema: intermediate
+      +materialized: ephemeral
+    marts:
+      core:
+        +schema: core
+        +materialized: table
+      analytics:
+        +schema: analytics
+        +materialized: table
+
+snapshots:
+  olist_warehouse:
+    +target_schema: snapshots

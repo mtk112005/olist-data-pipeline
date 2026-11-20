@@ -1,0 +1,7 @@
+# Local development (Airflow itself runs in Docker, see docker/Dockerfile)
+pandas>=2.2
+pyarrow>=16
+psycopg2-binary>=2.9
+dbt-core==1.12.7
+dbt-postgres==1.9.0
+pytest>=8
